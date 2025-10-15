@@ -1,7 +1,6 @@
 import { SuccessResponse } from "../../common/http/responses/success.response";
 import { UserService } from "../../core/services/user/user.service";
 import { Response, Request, NextFunction } from "express";
-import { AppError } from "../../utils/app.error";
 
 export class UserController {
     constructor(private userService: UserService) { }

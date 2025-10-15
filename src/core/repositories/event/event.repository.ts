@@ -1,4 +1,4 @@
-import { IEventRepository } from "../event.repository.interface";
+import { IEventRepository } from "./event.repository.interface";
 import { Event } from "../../../schema/event/event.schema";
 import { db } from "../../../config/database.config";
 
@@ -9,27 +9,27 @@ export class EventRepository implements IEventRepository {
         return events.rows;
     }
 
-    async findUnique(uniqueInput: any): Promise<Event | null> {
-        const query = `SELECT * FROM event WHERE ${uniqueInput}`;
-        const events = await db.query(query);
+    async findUnique(id: number): Promise<Event | null> {
+        const query = `SELECT * FROM events WHERE id = $1`;
+        const events = await db.query(query, [id]);
         return events.rows[0] || null;
     }
 
-    async create(createParams: any): Promise<Event> {
-        const query = `INSERT INTO event (name, total_seats) VALUE ($1, $2) RETURNING *`;
-        const events = await db.query(query, [createParams]);
+    async create(createParams: { name: string, total_seats: number }): Promise<Event> {
+        const query = `INSERT INTO events (name, total_seats) VALUES ($1, $2) RETURNING *`;
+        const events = await db.query(query, [createParams.name, createParams.total_seats]);
         return events.rows[0];
     }
 
-    async update(params: any): Promise<Event> {
-        const query = `UPDATE event SET name = $1, total_seats = $2 WHERE id = $3 RETURNING *`;
-        const events = await db.query(query, [params.updateParams]);
+    async update(id: number, params: { name: string, total_seats: number }): Promise<Event> {
+        const query = `UPDATE events SET name = $1, total_seats = $2 WHERE id = $3 RETURNING *`;
+        const events = await db.query(query, [params.name, params.total_seats, id]);
         return events.rows[0];
     }
 
-    async delete(params: any): Promise<Event> {
-        const query = `DELETE FROM event WHERE id = ${params.uniqueInput} RETURNING *`;
-        const events = await db.query(query, [params.updateParams]);
+    async delete(id: number): Promise<Event> {
+        const query = `DELETE FROM events WHERE id = $1 RETURNING *`;
+        const events = await db.query(query, [id]);
         return events.rows[0];
     }
 }

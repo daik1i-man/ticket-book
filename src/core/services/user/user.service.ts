@@ -1,6 +1,6 @@
 import { UserRepository } from '../../repositories/user/user.repository';
+import { AppError } from '../../../common/http/responses/error.response';
 import { User } from '../../../schema/user/user.schema';
-import { AppError } from '../../../utils/app.error';
 
 export class UserService {
     constructor(private userRepository: UserRepository) { }
@@ -29,7 +29,7 @@ export class UserService {
         return await this.userRepository.create(data);
     }
 
-    async update(id: number, params: any) {
+    async update(id: number, params: any): Promise<User> {
         const user = await this.userRepository.findUnique({ id });
 
         if (!user) {

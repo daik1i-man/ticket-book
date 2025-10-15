@@ -2,5 +2,5 @@ export type Booking = {
     id: number
     event_id: number
     user_id: number
-    created_at: string
+    created_at: Date
 }

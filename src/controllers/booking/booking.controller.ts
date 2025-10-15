@@ -1,13 +1,13 @@
 import { SuccessResponse } from "../../common/http/responses/success.response";
-import { EventService } from "../../core/services/event/event.service";
+import { BookingService } from "../../core/services/booking/booking.service";
 import { Response, Request, NextFunction } from "express";
 
-export class EventController {
-    constructor(private eventService: EventService) { }
+export class BookingController {
+    constructor(private bookingService: BookingService) { }
 
     async findMany(req: Request, res: Response, next: NextFunction) {
         try {
-            const result = await this.eventService.findMany();
+            const result = await this.bookingService.findMany();
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -20,8 +20,8 @@ export class EventController {
 
     async findUnique(req: Request, res: Response, next: NextFunction) {
         try {
-            const param = Number(req.params?.event_id);
-            const result = await this.eventService.findUnique(param);
+            const param = Number(req.params?.booking_id);
+            const result = await this.bookingService.findUnique({ id: param });
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -35,7 +35,7 @@ export class EventController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
-            const result = await this.eventService.create(body);
+            const result = await this.bookingService.create(body);
 
             res.status(201).json(SuccessResponse({
                 statusCode: 201,
@@ -49,8 +49,8 @@ export class EventController {
     async update(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
-            const param = Number(req.params?.event_id);
-            const result = await this.eventService.update(param, body);
+            const param = Number(req.params?.booking_id);
+            const result = await this.bookingService.update(param, body);
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -63,8 +63,8 @@ export class EventController {
 
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
-            const param = Number(req.params?.event_id);
-            const result = await this.eventService.delete(param);
+            const param = Number(req.params?.booking_id);
+            const result = await this.bookingService.delete(param);
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
