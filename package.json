@@ -1,0 +1,35 @@
+{
+  "name": "ticket-book",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "nodemon --exec ts-node src/main.ts",
+    "start:prod": "node dist/main.js"
+  },
+  "keywords": [],
+  "author": "Joshqin Alimboyev",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.7.2",
+    "@types/pg": "^8.15.5",
+    "dotenv": "^17.2.3",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.10",
+    "npm": "^11.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "class-validator": "^0.14.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  }
+}
