@@ -39,17 +39,17 @@ yarn install
 Run the development server:
 
 ```bash
-npm run start:dev
+npm run dev
 # or
-yarn run start:dev
+yarn run dev
 ```
 
 Run the production server:
 
 ```bash
-npm run start:prod
+npm run start
 # or
-yarn run start:prod
+yarn run start
 ```
 
 ## Project Structure
