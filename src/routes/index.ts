@@ -5,8 +5,8 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.use(bookingRouter);
-router.use(eventRouter);
-router.use(userRouter);
+router.use('/booking', bookingRouter);
+router.use('/event', eventRouter);
+router.use('/user', userRouter);
 
 export { router };

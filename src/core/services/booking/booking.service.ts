@@ -2,6 +2,8 @@ import { EventRepository } from '../../../core/repositories/event/event.reposito
 import { BookingRepository } from '../../repositories/booking/booking.repository';
 import { UserRepository } from '../../../core/repositories/user/user.repository';
 import { AppError } from '../../../common/http/responses/error.response';
+import { BookingFormDto } from '../../../types/dtos/booking/booking.dto';
+import { UniqueInputs } from '../../../types/unique.inputs.types';
 import { Booking } from '../../../schema/booking/booking.schema';
 
 export class BookingService {
@@ -15,8 +17,8 @@ export class BookingService {
         return await this.bookingRepository.findMany();
     }
 
-    async findUnique(params: { event_id?: number, user_id?: number, id?: number }): Promise<Booking | null> {
-        const booking = await this.bookingRepository.findUnique(params);
+    async findUnique(UniqueInputs: UniqueInputs['Booking']): Promise<Booking | null> {
+        const booking = await this.bookingRepository.findUnique(UniqueInputs);
 
         if (!booking) {
             throw new AppError('Booking not found', 404);
@@ -25,8 +27,8 @@ export class BookingService {
         return booking;
     }
 
-    async create(data: { event_id: number, user_id: number }): Promise<Booking> {
-        const event = await this.eventRepository.findUnique(data.event_id);
+    async create(data: BookingFormDto): Promise<Booking> {
+        const event = await this.eventRepository.findUnique({ id: data.event_id });
 
         if (!event) {
             throw new AppError('Event not found', 404);
@@ -47,23 +49,23 @@ export class BookingService {
         return await this.bookingRepository.create(data);
     }
 
-    async update(id: number, params: { event_id: number, user_id: number }): Promise<Booking> {
-        const booking = await this.bookingRepository.findUnique({ id });
+    async update(UniqueInputs: UniqueInputs['Booking'], params: BookingFormDto): Promise<Booking> {
+        const booking = await this.bookingRepository.findUnique(UniqueInputs);
 
         if (!booking) {
             throw new AppError('Booking not found', 404);
         }
 
-        return this.bookingRepository.update(id, params);
+        return this.bookingRepository.update(UniqueInputs, params);
     }
 
-    async delete(id: number): Promise<Booking> {
-        const booking = await this.bookingRepository.findUnique({ id });
+    async delete(UniqueInputs: UniqueInputs['Booking']): Promise<Booking> {
+        const booking = await this.bookingRepository.findUnique(UniqueInputs);
 
         if (!booking) {
             throw new AppError('Booking not found', 404);
         }
 
-        return this.bookingRepository.delete(id);
+        return this.bookingRepository.delete(UniqueInputs);
     }
 }

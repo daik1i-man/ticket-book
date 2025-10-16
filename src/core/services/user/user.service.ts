@@ -1,5 +1,7 @@
 import { UserRepository } from '../../repositories/user/user.repository';
 import { AppError } from '../../../common/http/responses/error.response';
+import { UniqueInputs } from '../../../types/unique.inputs.types';
+import { UserFormDto } from '../../../types/dtos/user/user.dto';
 import { User } from '../../../schema/user/user.schema';
 
 export class UserService {
@@ -9,8 +11,8 @@ export class UserService {
         return await this.userRepository.findMany();
     }
 
-    async findUnique(id: number): Promise<User | null> {
-        const user = await this.userRepository.findUnique({ id });
+    async findUnique(UniqueInputs: UniqueInputs['User']): Promise<User | null> {
+        const user = await this.userRepository.findUnique(UniqueInputs);
 
         if (!user) {
             throw new AppError('User not found', 404);
@@ -19,7 +21,7 @@ export class UserService {
         return user;
     }
 
-    async create(data: { name: string, email: string }): Promise<User> {
+    async create(data: UserFormDto): Promise<User> {
         const user = await this.userRepository.findUnique({ email: data.email });
 
         if (user) {
@@ -29,23 +31,23 @@ export class UserService {
         return await this.userRepository.create(data);
     }
 
-    async update(id: number, params: any): Promise<User> {
-        const user = await this.userRepository.findUnique({ id });
+    async update(UniqueInputs: UniqueInputs['User'], params: UserFormDto): Promise<User> {
+        const user = await this.userRepository.findUnique(UniqueInputs);
 
         if (!user) {
             throw new AppError('User not found', 404);
         }
 
-        return this.userRepository.update(id, params);
+        return this.userRepository.update(UniqueInputs, params);
     }
 
-    async delete(id: number): Promise<User> {
-        const user = await this.userRepository.findUnique({ id });
+    async delete(UniqueInputs: UniqueInputs['User']): Promise<User> {
+        const user = await this.userRepository.findUnique(UniqueInputs);
 
         if (!user) {
             throw new AppError('User not found', 404);
         }
 
-        return this.userRepository.delete(id);
+        return this.userRepository.delete(UniqueInputs);
     }
 }

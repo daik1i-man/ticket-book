@@ -1,5 +1,6 @@
 import { SuccessResponse } from "../../common/http/responses/success.response";
 import { UserService } from "../../core/services/user/user.service";
+import { UserFormDto } from "../../types/dtos/user/user.dto";
 import { Response, Request, NextFunction } from "express";
 
 export class UserController {
@@ -21,7 +22,7 @@ export class UserController {
     async findUnique(req: Request, res: Response, next: NextFunction) {
         try {
             const param = Number(req.params?.user_id);
-            const result = await this.userService.findUnique(param);
+            const result = await this.userService.findUnique({ id: param });
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -34,7 +35,7 @@ export class UserController {
 
     async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
+            const body: UserFormDto = req.body;
             const result = await this.userService.create(body);
 
             res.status(201).json(SuccessResponse({
@@ -48,9 +49,9 @@ export class UserController {
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
+            const body: UserFormDto = req.body;
             const param = Number(req.params?.user_id);
-            const result = await this.userService.update(param, body);
+            const result = await this.userService.update({ id: param }, body);
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -64,7 +65,7 @@ export class UserController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const param = Number(req.params?.user_id);
-            const result = await this.userService.delete(param);
+            const result = await this.userService.delete({ id: param });
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,

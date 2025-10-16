@@ -1,5 +1,6 @@
 import { SuccessResponse } from "../../common/http/responses/success.response";
 import { EventService } from "../../core/services/event/event.service";
+import { EventFormDto } from "../..//types/dtos/event/event.dto";
 import { Response, Request, NextFunction } from "express";
 
 export class EventController {
@@ -21,7 +22,7 @@ export class EventController {
     async findUnique(req: Request, res: Response, next: NextFunction) {
         try {
             const param = Number(req.params?.event_id);
-            const result = await this.eventService.findUnique(param);
+            const result = await this.eventService.findUnique({ id: param });
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -34,7 +35,7 @@ export class EventController {
 
     async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
+            const body: EventFormDto = req.body;
             const result = await this.eventService.create(body);
 
             res.status(201).json(SuccessResponse({
@@ -48,9 +49,9 @@ export class EventController {
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
+            const body: EventFormDto = req.body;
             const param = Number(req.params?.event_id);
-            const result = await this.eventService.update(param, body);
+            const result = await this.eventService.update({ id: param }, body);
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -64,7 +65,7 @@ export class EventController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const param = Number(req.params?.event_id);
-            const result = await this.eventService.delete(param);
+            const result = await this.eventService.delete({ id: param });
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,

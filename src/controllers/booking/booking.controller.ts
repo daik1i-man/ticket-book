@@ -1,5 +1,7 @@
 import { SuccessResponse } from "../../common/http/responses/success.response";
 import { BookingService } from "../../core/services/booking/booking.service";
+import { BookingFormDto } from "../../types/dtos/booking/booking.dto";
+import { UniqueInputs } from "../../types/unique.inputs.types";
 import { Response, Request, NextFunction } from "express";
 
 export class BookingController {
@@ -34,7 +36,7 @@ export class BookingController {
 
     async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
+            const body: BookingFormDto = req.body;
             const result = await this.bookingService.create(body);
 
             res.status(201).json(SuccessResponse({
@@ -48,9 +50,9 @@ export class BookingController {
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
+            const body: BookingFormDto = req.body;
             const param = Number(req.params?.booking_id);
-            const result = await this.bookingService.update(param, body);
+            const result = await this.bookingService.update({ id: param }, body);
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
@@ -64,7 +66,7 @@ export class BookingController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const param = Number(req.params?.booking_id);
-            const result = await this.bookingService.delete(param);
+            const result = await this.bookingService.delete({ id: param });
 
             res.status(200).json(SuccessResponse({
                 statusCode: 200,
